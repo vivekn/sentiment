@@ -1,0 +1,35 @@
+###
+All results on test data set of IMDb movie reviews
+###
+
+
+0. Positive / Negative Word list - simple counting
+
+True Positives: 11780
+False Positives: 9665
+False Negatives: 720
+
+Precision: 0.549312
+Recall: 0.942400
+F1 Score: 0.694064
+
+
+1. Without Negations, NB, Trained on movie reviews
+
+True Positives: 8001
+False Positives: 4589
+False Negatives: 4499
+
+Precision: 0.635504
+Recall: 0.640080
+F1 Score: 0.637784
+
+2. With Negations, NB, Trained on movie reviews
+
+True Positives: 10630
+False Positives: 2537
+False Negatives: 1870
+
+Precision: 0.807321
+Recall: 0.850400
+F1 Score: 0.828301
