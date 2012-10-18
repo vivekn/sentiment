@@ -30,7 +30,7 @@ def fscore(classifier, file_paths):
     print "Precision: %lf\nRecall: %lf\nF1 Score: %lf" % (prec, recall, f1)
 
 def main():
-    from altbayes_copy import classify, train
+    from altbayes import classify, train
     train()
     fscore(classify, get_paths())
 
