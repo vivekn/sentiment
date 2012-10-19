@@ -33,3 +33,54 @@ False Negatives: 1870
 Precision: 0.807321
 Recall: 0.850400
 F1 Score: 0.828301
+
+3. Reduced training set (500 reviews)
+
+True Positives: 7294
+False Positives: 1635
+False Negatives: 5206
+
+Precision: 0.816889
+Recall: 0.583520
+F1 Score: 0.680760
+
+4. Reduced training set (random samples)
+
+True Positives: 11778
+False Positives: 7497
+False Negatives: 722
+
+Precision: 0.611051
+Recall: 0.942240
+F1 Score: 0.741338
+
+5. Reduced training set (1000 random samples)
+
+True Positives: 9921
+False Positives: 2837
+False Negatives: 2579
+
+Precision: 0.777630
+Recall: 0.793680
+F1 Score: 0.785573
+
+6. Weights (1, 2, 3) + Random samples
+
+True Positives: 8807
+False Positives: 1435
+False Negatives: 3693
+
+Precision: 0.859891
+Recall: 0.704560
+F1 Score: 0.774514
+
+7. Weights (6, 12, 18) + Random samples
+
+True Positives: 8680
+False Positives: 1491
+False Negatives: 3820
+
+Precision: 0.853407
+Recall: 0.694400
+F1 Score: 0.765736
+
