@@ -84,3 +84,8 @@ Precision: 0.853407
 Recall: 0.694400
 F1 Score: 0.765736
 
+8. After fine tuning
+
+Precision : 83.66
+Recall: 83.64
+Accuracy: 83.65

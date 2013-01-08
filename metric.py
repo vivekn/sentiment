@@ -14,7 +14,7 @@ def get_paths():
 
 
 def fscore(classifier, file_paths):
-    tpos, fpos, fneg = 0, 0, 0
+    tpos, fpos, fneg, tneg = 0, 0, 0, 0
     for path, label in file_paths:
         result = classifier(open(path).read())
         if label and result:
@@ -23,15 +23,18 @@ def fscore(classifier, file_paths):
             fneg += 1
         elif (not label) and result:
             fpos += 1
+        else:
+            tneg += 1
     prec = 1.0 * tpos / (tpos + fpos)
     recall = 1.0 * tpos / (tpos + fneg)
     f1 = 2 * prec * recall / (prec + recall)
-    print "True Positives: %d\nFalse Positives: %d\nFalse Negatives: %d\n" % (tpos, fpos, fneg)
-    print "Precision: %lf\nRecall: %lf\nF1 Score: %lf" % (prec, recall, f1)
+    accu = 100.0 * (tpos + tneg) / (tpos+tneg+fpos+fneg)
+    # print "True Positives: %d\nFalse Positives: %d\nFalse Negatives: %d\n" % (tpos, fpos, fneg)
+    print "Precision: %lf\nRecall: %lf\nAccuracy: %lf" % (prec, recall, accu)
 
 def main():
-    from altbayes import classify, train, train_with_weights
-    train_with_weights()
+    from altbayes import classify, train 
+    train()
     fscore(classify, get_paths())
 
 if __name__ == '__main__':

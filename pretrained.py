@@ -6,11 +6,11 @@ from math import log
 import re
 import os
 import random
+import pickle
 
 
-positive = defaultdict(int)
-negative = defaultdict(int)
-sums = {'pos': 0, 'neg': 0}
+handle = open("trained", "rb")
+sums, positive, negative = pickle.load(handle)
 
 def tokenize(text):
     return re.findall("\w+", text)
@@ -34,25 +34,6 @@ def negate_sequence(text):
             negation = False
     return result
 
-def train():
-    for path in os.listdir("./aclImdb/train/pos/"):
-        path = "./aclImdb/train/pos/" + path
-        words = set(negate_sequence(open(path).read()))
-        for word in words:
-            positive[word] += 1
-            sums['pos'] += 1
-            negative['not_' + word] += 1
-            sums['neg'] += 1
-
-    for path in os.listdir("./aclImdb/train/neg/"):
-        path = "./aclImdb/train/neg/" + path
-        words = set(negate_sequence(open(path).read()))
-        for word in words:
-            negative[word] += 1
-            sums['neg'] += 1
-            positive['not_' + word] += 1
-            sums['pos'] += 1
-
 def get_positive_prob(word):
     return 1.0 * (positive[word] + 1) / (2 * sums['pos'])
 
@@ -60,15 +41,21 @@ def get_negative_prob(word):
     return 1.0 * (negative[word] + 1) / (2 * sums['neg'])
 
 def classify(text, pneg = 0.5):
-    words = set(negate_sequence(text))
+    words = negate_sequence(text)
     pscore, nscore = 0, 0
 
     for word in words:
         pscore += log(get_positive_prob(word))
         nscore += log(get_negative_prob(word))
 
-    return pscore > nscore
+    return pscore > nscore, pscore - nscore
 
+def test():
+    strings = [
+    open("pos_example").read(), 
+    open("neg_example").read()
+    ]
+    print map(classify, strings)
 
 if __name__ == '__main__':
-    pass
+    test()
