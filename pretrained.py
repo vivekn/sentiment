@@ -2,7 +2,7 @@
 Train a naive Bayes classifier from the IMDb reviews data set
 """
 from collections import defaultdict
-from math import log
+from math import log, exp
 import re
 import os
 import random
@@ -50,10 +50,27 @@ def classify(text, pneg = 0.5):
 
     return pscore > nscore, pscore - nscore
 
+def classify_demo(text):
+    words = negate_sequence(text)
+    pscore, nscore = 0, 0
+
+    for word in words:
+        pdelta = log(get_positive_prob(word))
+        ndelta = log(get_negative_prob(word))
+        pscore += pdelta
+        nscore += ndelta
+        print "%s, pos=(%lf, %d), neg=(%lf, %d)" % (word, pdelta, positive[word], ndelta, negative[word]) 
+
+    print "\nPositive" if pscore > nscore else "Negative"
+    print "Confidence: %lf" % exp(abs(pscore - nscore))
+    return pscore > nscore, pscore, nscore
+
 def test():
     strings = [
     open("pos_example").read(), 
-    open("neg_example").read()
+    open("neg_example").read(),
+    "This book was quite good.",
+    "I think this product is horrible."
     ]
     print map(classify, strings)
 
