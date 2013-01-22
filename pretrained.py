@@ -59,7 +59,7 @@ def classify_demo(text):
         ndelta = log(get_negative_prob(word))
         pscore += pdelta
         nscore += ndelta
-        print "%s, pos=(%lf, %d), neg=(%lf, %d)" % (word, pdelta, positive[word], ndelta, negative[word]) 
+        print "%25s, pos=(%10lf, %10d) \t\t neg=(%10lf, %10d)" % (word, pdelta, positive[word], ndelta, negative[word]) 
 
     print "\nPositive" if pscore > nscore else "Negative"
     print "Confidence: %lf" % exp(abs(pscore - nscore))
