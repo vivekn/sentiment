@@ -13,8 +13,10 @@ positive = defaultdict(int)
 negative = defaultdict(int)
 sums = {'pos': 0, 'neg': 0}
 
+
 def tokenize(text):
     return re.findall("\w+", text)
+
 
 def negate_sequence(text):
     """
@@ -35,6 +37,7 @@ def negate_sequence(text):
             negation = False
     return result
 
+
 def position_info(seq):
     """ Remove duplicates and add position information """
     last_occurence = dict()
@@ -42,6 +45,7 @@ def position_info(seq):
         last_occurence[x] = 1
     
     return last_occurence.items()
+
 
 def train():
     for path in os.listdir("./aclImdb/train/pos/"):
@@ -65,11 +69,15 @@ def train():
     # handle = open("trained", "wb")
     # pickle.dump(data, handle)
 
+
 def get_positive_prob(word):
     return 1.0 * (positive[word] + 1) / (2 * sums['pos'])
 
+
 def get_negative_prob(word):
     return 1.0 * (negative[word] + 1) / (2 * sums['neg'])
+
+
 
 def classify(text, pneg = 0.5):
     words = position_info(negate_sequence(text))
