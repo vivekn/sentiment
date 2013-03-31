@@ -89,3 +89,27 @@ F1 Score: 0.765736
 Precision : 83.66
 Recall: 83.64
 Accuracy: 83.65
+
+9. SVM with linear kernel
+
+Done! 988618 iterations
+
+CPU Time:			00:41:37
+Accuracy:   86.26400% (21566/25000)
+Precision:  86.85366% (10683/12300)
+Recall:     85.46400% (10683/12500)
+System/Answer p/p p/n n/p n/n: 10683 1617 1817 10883
+
+10. Mutual Information, Naive Bayes (1000 examples)
+
+Accuracy - 85.9% at 6000 features, exponential position weighting 1 to e
+Accuracy - 86% at 5200 features, exponential position weighting 1 to e**.7
+Accuracy - 86.3% at 5600 features, no position weighting
+Accuracy - 86.7% at 12000 features with bigrams
+Accuracy - 87.5% at 19000 features with bigrams
+
+11. Mutual Information, Naive Bayes (full set)
+
+Accuracy - 84.9% at 6500 features, no weighting.
+Accuracy - 84.672% at 7000  features, exponential position weighting 1 to e**.7
+Accuracy - 87.66% at 16000 features with bigrams
