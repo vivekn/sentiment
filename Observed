@@ -113,3 +113,5 @@ Accuracy - 87.5% at 19000 features with bigrams
 Accuracy - 84.9% at 6500 features, no weighting.
 Accuracy - 84.672% at 7000  features, exponential position weighting 1 to e**.7
 Accuracy - 87.66% at 16000 features with bigrams
+Accuracy - 88.34% aat 26000 features with trigrams
+Accuracy - 88.80% aat 32000 features with trigrams
