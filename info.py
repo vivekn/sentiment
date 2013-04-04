@@ -91,6 +91,17 @@ def classify(text):
     neg_prob = sum(log((neg[word] + 1) / (2 * totals[1])) for word in words)
     return pos_prob > neg_prob
 
+def classify2(text):
+    """
+    For classification from pretrained data
+    """
+    words = set(word for word in negate_sequence(text) if word in pos or word in neg)
+    if (len(words) == 0): return True
+    # Probability that word occurs in pos documents
+    pos_prob = sum(log((pos[word] + 1) / (2 * totals[0])) for word in words)
+    neg_prob = sum(log((neg[word] + 1) / (2 * totals[1])) for word in words)
+    return pos_prob > neg_prob
+
 def classify_demo(text):
     words = set(word for word in negate_sequence(text) if word in pos or word in neg)
     if (len(words) == 0): 
@@ -106,7 +117,6 @@ def classify_demo(text):
         nprob += np
 
     print ("Positive" if pprob > nprob else "Negative"), "log-diff = %.9f" % abs(pprob - nprob)
-
 
 def MI(word):
     """
@@ -197,8 +207,22 @@ def feature_selection_trials():
     # pylab.plot(num_features, accuracy)
     # pylab.show()
 
+def test_pang_lee():
+    """
+    Tests the Pang Lee dataset
+    """
+    total, correct = 0, 0
+    for fname in os.listdir("txt_sentoken/pos"):
+        correct += int(classify2(open("txt_sentoken/pos/" + fname).read()) == True)
+        total += 1
+    for fname in os.listdir("txt_sentoken/neg"):
+        correct += int(classify2(open("txt_sentoken/neg/" + fname).read()) == False)
+        total += 1
+    print "accuracy: %f" % (correct / total)
+
 if __name__ == '__main__':
     # train()
     feature_selection_trials()
+    test_pang_lee()
     # classify_demo(open("pos_example").read())
     # classify_demo(open("neg_example").read())
