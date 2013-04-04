@@ -1,5 +1,5 @@
 from __future__ import division
-from math import log
+from math import log, exp
 from operator import mul
 from collections import Counter
 import os
@@ -60,7 +60,7 @@ def train():
     global pos, neg, totals
     retrain = False 
     
-    # Load counts if they already exists
+    # Load counts if they already exist.
     if not retrain and os.path.isfile(CDATA_FILE):
         pos, neg, totals = cPickle.load(open(CDATA_FILE))
         return
@@ -91,7 +91,27 @@ def classify(text):
     neg_prob = sum(log((neg[word] + 1) / (2 * totals[1])) for word in words)
     return pos_prob > neg_prob
 
+def classify_demo(text):
+    words = set(word for word in negate_sequence(text) if word in pos or word in neg)
+    if (len(words) == 0): 
+        print "No features to compare on"
+        return True
+
+    pprob, nprob = 0, 0
+    for word in words:
+        pp = log((pos[word] + 1) / (2 * totals[0]))
+        np = log((neg[word] + 1) / (2 * totals[1]))
+        print "%15s %.9f %.9f" % (word, exp(pp), exp(np))
+        pprob += pp
+        nprob += np
+
+    print ("Positive" if pprob > nprob else "Negative"), "log-diff = %.9f" % abs(pprob - nprob)
+
+
 def MI(word):
+    """
+    Compute the weighted mutual information of a term.
+    """
     T = totals[0] + totals[1]
     W = pos[word] + neg[word]
     I = 0
@@ -110,12 +130,15 @@ def MI(word):
     return I
 
 def get_relevant_features():
-    pos_dump = {k: pos[k] for k in pos if k in features}
-    neg_dump = {k: pos[k] for k in neg if k in features}
+    pos_dump = MyDict({k: pos[k] for k in pos if k in features})
+    neg_dump = MyDict({k: neg[k] for k in neg if k in features})
     totals_dump = [sum(pos_dump.values()), sum(neg_dump.values())]
     return (pos_dump, neg_dump, totals_dump)
 
 def prune_features():
+    """
+    Remove features that appear only once.
+    """
     global pos, neg
     for k in pos.keys():
         if pos[k] <= 1 and neg[k] <= 1:
@@ -129,7 +152,13 @@ def feature_selection_trials():
     """
     Select top k features. Vary k and plot data
     """
-    global pos, neg, features
+    global pos, neg, totals, features
+    retrain = False
+
+    if not retrain and os.path.isfile(FDATA_FILE):
+        pos, neg, totals = cPickle.load(open(FDATA_FILE))
+        return
+
     words = list(set(pos.keys() + neg.keys()))
     print "Total no of features:", len(words)
     words.sort(key=lambda w: -MI(w))
@@ -163,11 +192,13 @@ def feature_selection_trials():
         print k+step, correct / size
 
     features = set(words[:bestk])
-    # cPickle.dump(get_relevant_features(), open(FDATA_FILE, 'w'))
+    cPickle.dump(get_relevant_features(), open(FDATA_FILE, 'w'))
 
-    pylab.plot(num_features, accuracy)
-    pylab.show()
+    # pylab.plot(num_features, accuracy)
+    # pylab.show()
 
 if __name__ == '__main__':
-    train()
+    # train()
     feature_selection_trials()
+    # classify_demo(open("pos_example").read())
+    # classify_demo(open("neg_example").read())
