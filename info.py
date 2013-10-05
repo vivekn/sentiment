@@ -58,7 +58,7 @@ def negate_sequence(text):
 
 def train():
     global pos, neg, totals
-    retrain = False 
+    retrain = False
     
     # Load counts if they already exist.
     if not retrain and os.path.isfile(CDATA_FILE):
@@ -163,7 +163,7 @@ def feature_selection_trials():
     Select top k features. Vary k and plot data
     """
     global pos, neg, totals, features
-    retrain = False
+    retrain = True
 
     if not retrain and os.path.isfile(FDATA_FILE):
         pos, neg, totals = cPickle.load(open(FDATA_FILE))
@@ -177,11 +177,11 @@ def feature_selection_trials():
     limit = 500
     path = "./aclImdb/test/"
     step = 500
-    start = 31000
+    start = 20000
     best_accuracy = 0.0
     for w in words[:start]:
         features.add(w)
-    for k in xrange(start, 33000, step):
+    for k in xrange(start, 40000, step):
         for w in words[k:k+step]:
             features.add(w)
         correct = 0
@@ -204,8 +204,8 @@ def feature_selection_trials():
     features = set(words[:bestk])
     cPickle.dump(get_relevant_features(), open(FDATA_FILE, 'w'))
 
-    # pylab.plot(num_features, accuracy)
-    # pylab.show()
+    pylab.plot(num_features, accuracy)
+    pylab.show()
 
 def test_pang_lee():
     """
@@ -221,8 +221,8 @@ def test_pang_lee():
     print "accuracy: %f" % (correct / total)
 
 if __name__ == '__main__':
-    # train()
+    train()
     feature_selection_trials()
-    test_pang_lee()
+    # test_pang_lee()
     # classify_demo(open("pos_example").read())
     # classify_demo(open("neg_example").read())
